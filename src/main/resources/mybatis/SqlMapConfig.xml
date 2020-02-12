@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+		PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<!--&lt;!&ndash; 配置分页插件 &ndash;&gt;-->
+	<!--<plugins>-->
+		<!--<plugin interceptor="com.github.pagehelper.PageHelper">-->
+			<!--&lt;!&ndash; 设置数据库类型 Oracle,Mysql,MariaDB,SQLite,Hsqldb,PostgreSQL六种数据库&ndash;&gt;        -->
+        	<!--<property name="dialect" value="mysql"/>-->
+		<!--</plugin>-->
+	<!--</plugins>-->
+
+	<settings>
+		<setting name="mapUnderscoreToCamelCase" value="true"/>
+		<setting name="cacheEnabled"             value="true" />  <!-- 全局映射器启用缓存 -->
+		<setting name="useGeneratedKeys"         value="true" />  <!-- 允许 JDBC 支持自动生成主键 -->
+		<setting name="defaultExecutorType"      value="REUSE" /> <!-- 配置默认的执行器 -->
+		<setting name="logImpl"                  value="SLF4J" /> <!-- 指定 MyBatis 所用日志的具体实现 -->
+	</settings>
+</configuration>
+
+

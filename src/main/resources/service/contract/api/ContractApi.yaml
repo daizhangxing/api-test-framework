@@ -1,0 +1,31 @@
+methods:
+  getContract:
+    query:
+      contractId: ${contractId}
+      account: ${account}
+    method: get
+    requestUrlPath: /api/contracts/{contractId}
+
+  getContratList:
+    postBody:
+      signaturePositions:
+        -
+            pageNum:  ${contractId}
+            x:  ${x}
+            y:  0.01
+        -
+            pageNum:  ${account}
+            x:  0.05
+            y:  0.01
+    method: post
+    requestUrlPath: /api/contracts/111111
+
+  getContractIntegration:
+    query:
+      contractId: ${contractId}
+      account: ${account}
+    method: get
+    requestUrlPath: /api/contracts/{contractId}
+
+
+

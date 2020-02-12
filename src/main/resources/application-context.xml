@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+    http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-4.0.xsd
+    http://www.springframework.org/schema/aop
+http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
+
+
+    <context:component-scan base-package="cn.bestsign.dataprovider"></context:component-scan>
+    <context:component-scan base-package="cn.bestsign.openapi.service"></context:component-scan>
+
+
+    <!-- 加载配置文件 -->
+    <context:property-placeholder location="classpath:/resource/*.properties" />
+    <!--和上面的加载配置项功能一样-->
+    <!--<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">-->
+        <!--<property name="locations">-->
+            <!--<list>-->
+                <!--<value>classpath:resource/db.properties</value>-->
+            <!--</list>-->
+        <!--</property>-->
+        <!--&lt;!&ndash;<property name="ignoreResourceNotFound" value="true"/>&ndash;&gt;-->
+    <!--</bean>-->
+
+
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+          destroy-method="close">
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+        <property name="driverClassName" value="${jdbc.driver}"/>
+        <!--<property name="driverClassName" value="com.mysql.jdbc.Driver"/>-->
+        <property name="maxActive" value="10"/>
+        <property name="minIdle" value="5"/>
+    </bean>
+    <!-- 配置sqlsessionFactory -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="configLocation" value="classpath:mybatis/SqlMapConfig.xml"></property>
+        <property name="dataSource" ref="dataSource"></property>
+        <!-- 显式指定Mapper文件位置 -->
+        <property name="mapperLocations" value="classpath:/mapper/**/*Mapper.xml"/>
+        <property name="typeAliasesPackage" value="cn.bestsign.openapi.domain" />
+    </bean>
+    <!-- 配置扫描包，加载mapper代理对象 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!-- 指定会话工厂，如配置中只有一个则可省去 -->
+        <!--<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>-->
+        <!-- 指定要自动扫描的包，不带类名，表示扫描工程下所有在这一层下面的接口，所以为了方便，尽量把所有映射接口都放在同一包下 -->
+        <property name="basePackage" value="cn.bestsign.openapi.mapper"></property>
+    </bean>
+
+</beans>

@@ -1,0 +1,30 @@
+{{#repo}}
+  <b>{{name}}</b>
+  !!!
+  {{name}}
+  !!!
+{{/repo}}
+{
+    "contractId": "cU34344234",
+    "signer": "{{name}}",
+    {{#name}}
+    "signer":{{name}}
+    {{/name}}
+    "signatureImageData": "cU34344234",
+    "signaturePositions": [
+        {
+            "pageNum": "1",
+            "x": "0.05",
+            "y": "0.71",
+            "rptPageNums": "2,3,4,5,6,7"
+        },
+        {
+            "pageNum": "2",
+            "x": "0.05",
+            "y": "0.81"
+        }
+    ]
+}
+
+
+

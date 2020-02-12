@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.bestsign.openapi.mapper.OpenapiInterfaceMapper">
+    
+    <resultMap type="OpenapiInterface" id="OpenapiInterfaceResult">
+        <result property="interfaceId"    column="interface_id"    />
+        <result property="interfaceName"    column="interface_name"    />
+        <result property="method"    column="method"    />
+        <result property="interfaceDescription"    column="interface_description"    />
+        <result property="projectId"    column="project_id"    />
+    </resultMap>
+
+    <sql id="selectOpenapiInterfaceVo">
+        select interface_id, interface_name, method,interface_description, project_id from openapi_interface
+    </sql>
+
+    <select id="selectOpenapiInterfaceList" parameterType="OpenapiInterface" resultMap="OpenapiInterfaceResult">
+        <include refid="selectOpenapiInterfaceVo"/>
+        <where>  
+            <if test="interfaceName != null  and interfaceName != ''"> and interface_name like concat('%', #{interfaceName}, '%')</if>
+            <if test="method != null  and method != ''"> and method like concat('%', #{method}, '%')</if>
+            <if test="interfaceDescription != null  and interfaceDescription != ''"> and interface_description like concat('%', #{interfaceDescription}, '%')</if>
+            <if test="projectId != null "> and project_id = #{projectId}</if>
+        </where>
+    </select>
+    
+    <select id="selectOpenapiInterfaceById" parameterType="Long" resultMap="OpenapiInterfaceResult">
+        <include refid="selectOpenapiInterfaceVo"/>
+        where interface_id = #{interfaceId}
+    </select>
+
+
+
+
+    <select id="selectOpenapiInterfaceListByProjectIdLong" parameterType="Long" resultMap="OpenapiInterfaceResult">
+        <include refid="selectOpenapiInterfaceVo"/>
+        where project_id = #{projectId}
+    </select>
+
+    <select id="selectOpenapiInterfaceByName" parameterType="String" resultMap="OpenapiInterfaceResult">
+        <include refid="selectOpenapiInterfaceVo"/>
+        where interface_name = #{interfaceName}
+    </select>
+
+
+    <select id="selectOpenapiInterfaceListByProjectId" parameterType="OpenapiInterface" resultMap="OpenapiInterfaceResult">
+        <include refid="selectOpenapiInterfaceVo"/>
+        <where>
+            <if test="interfaceName != null  and interfaceName != ''"> and interface_name like concat('%', #{interfaceName}, '%')</if>
+            <if test="method != null  and method != ''"> and method like concat('%', #{method}, '%')</if>
+            <if test="interfaceDescription != null  and interfaceDescription != ''"> and interface_description like concat('%', #{interfaceDescription}, '%')</if>
+            and project_id = #{projectId}
+        </where>
+    </select>
+
+
+
+
+    <insert id="insertOpenapiInterface" parameterType="OpenapiInterface" useGeneratedKeys="true" keyProperty="interfaceId">
+        insert into openapi_interface
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="interfaceName != null  and interfaceName != ''">interface_name,</if>
+            <if test="method != null  and method != ''">method,</if>
+            <if test="interfaceDescription != null  and interfaceDescription != ''">interface_description,</if>
+            <if test="projectId != null ">project_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="interfaceName != null  and interfaceName != ''">#{interfaceName},</if>
+            <if test="method != null  and method != ''">#{method},</if>
+            <if test="interfaceDescription != null  and interfaceDescription != ''">#{interfaceDescription},</if>
+            <if test="projectId != null ">#{projectId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOpenapiInterface" parameterType="OpenapiInterface">
+        update openapi_interface
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="interfaceName != null  and interfaceName != ''">interface_name = #{interfaceName},</if>
+            <if test="method != null  and method != ''">method = #{method},</if>
+            <if test="interfaceDescription != null  and interfaceDescription != ''">interface_description = #{interfaceDescription},</if>
+            <if test="projectId != null ">project_id = #{projectId},</if>
+        </trim>
+        where interface_id = #{interfaceId}
+    </update>
+
+    <delete id="deleteOpenapiInterfaceById" parameterType="Long">
+        delete from openapi_interface where interface_id = #{interfaceId}
+    </delete>
+
+    <delete id="deleteOpenapiInterfaceByIds" parameterType="String">
+        delete from openapi_interface where interface_id in 
+        <foreach item="interfaceId" collection="array" open="(" separator="," close=")">
+            #{interfaceId}
+        </foreach>
+    </delete>
+    
+</mapper>

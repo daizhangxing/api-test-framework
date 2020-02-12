@@ -1,0 +1,10 @@
+methods:
+  getContractIntegration:
+    query:
+      contractId: ${contractId}
+      account: ${account}
+    method: get
+    requestUrlPath: /api/contracts/{contractId}
+
+
+

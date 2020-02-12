@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.bestsign.openapi.mapper.OpenapiCasedetailMapper">
+    
+    <resultMap type="OpenapiCasedetail" id="OpenapiCasedetailResult">
+        <result property="caseId"    column="case_id"    />
+        <result property="caseName"    column="case_name"    />
+        <result property="caseInput"    column="case_input"    />
+        <result property="expectOutput"    column="expect_output"    />
+        <result property="actualOutput"    column="actual_output"    />
+        <result property="interfactId"    column="interfact_id"    />
+        <result property="gmtCreate"    column="gmt_create"    />
+        <result property="gmtModified"    column="gmt_modified"    />
+        <result property="description"    column="description"    />
+        <result property="creator"    column="creator"    />
+        <result property="issucess"    column="isSucess"    />
+    </resultMap>
+
+    <sql id="selectOpenapiCasedetailVo">
+        select case_id, case_name, case_input, expect_output, actual_output, interfact_id, gmt_create, gmt_modified, description, creator, isSucess from openapi_casedetail
+    </sql>
+
+    <select id="selectOpenapiCasedetailList" parameterType="OpenapiCasedetail" resultMap="OpenapiCasedetailResult">
+        <include refid="selectOpenapiCasedetailVo"/>
+        <where>  
+            <if test="caseName != null  and caseName != ''"> and case_name like concat('%', #{caseName}, '%')</if>
+            <if test="caseInput != null  and caseInput != ''"> and case_input = #{caseInput}</if>
+            <if test="expectOutput != null  and expectOutput != ''"> and expect_output = #{expectOutput}</if>
+            <if test="actualOutput != null  and actualOutput != ''"> and actual_output = #{actualOutput}</if>
+            <if test="interfactId != null "> and interfact_id = #{interfactId}</if>
+            <if test="gmtCreate != null "> and gmt_create = #{gmtCreate}</if>
+            <if test="gmtModified != null "> and gmt_modified = #{gmtModified}</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+            <if test="creator != null  and creator != ''"> and creator = #{creator}</if>
+            <if test="issucess != null  and issucess != ''"> and isSucess = #{issucess}</if>
+        </where>
+    </select>
+    
+    <select id="selectOpenapiCasedetailById" parameterType="Long" resultMap="OpenapiCasedetailResult">
+        <include refid="selectOpenapiCasedetailVo"/>
+        where case_id = #{caseId}
+    </select>
+
+    <select id="selectOpenapiCaseListByInterfaceId" parameterType="Long" resultMap="OpenapiCasedetailResult">
+        <include refid="selectOpenapiCasedetailVo"/>
+        where interfact_id = #{interfactId}
+    </select>
+        
+    <insert id="insertOpenapiCasedetail" parameterType="OpenapiCasedetail" useGeneratedKeys="true" keyProperty="caseId">
+        insert into openapi_casedetail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="caseName != null  and caseName != ''">case_name,</if>
+            <if test="caseInput != null  and caseInput != ''">case_input,</if>
+            <if test="expectOutput != null  and expectOutput != ''">expect_output,</if>
+            <if test="actualOutput != null  and actualOutput != ''">actual_output,</if>
+            <if test="interfactId != null ">interfact_id,</if>
+            <if test="gmtCreate != null ">gmt_create,</if>
+            <if test="gmtModified != null ">gmt_modified,</if>
+            <if test="description != null  and description != ''">description,</if>
+            <if test="creator != null  and creator != ''">creator,</if>
+            <if test="issucess != null  and issucess != ''">isSucess,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="caseName != null  and caseName != ''">#{caseName},</if>
+            <if test="caseInput != null  and caseInput != ''">#{caseInput},</if>
+            <if test="expectOutput != null  and expectOutput != ''">#{expectOutput},</if>
+            <if test="actualOutput != null  and actualOutput != ''">#{actualOutput},</if>
+            <if test="interfactId != null ">#{interfactId},</if>
+            <if test="gmtCreate != null ">#{gmtCreate},</if>
+            <if test="gmtModified != null ">#{gmtModified},</if>
+            <if test="description != null  and description != ''">#{description},</if>
+            <if test="creator != null  and creator != ''">#{creator},</if>
+            <if test="issucess != null  and issucess != ''">#{issucess},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOpenapiCasedetail" parameterType="OpenapiCasedetail">
+        update openapi_casedetail
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="caseName != null  and caseName != ''">case_name = #{caseName},</if>
+            <if test="caseInput != null  and caseInput != ''">case_input = #{caseInput},</if>
+            <if test="expectOutput != null  and expectOutput != ''">expect_output = #{expectOutput},</if>
+            <if test="actualOutput != null  and actualOutput != ''">actual_output = #{actualOutput},</if>
+            <if test="interfactId != null ">interfact_id = #{interfactId},</if>
+            <if test="gmtCreate != null ">gmt_create = #{gmtCreate},</if>
+            <if test="gmtModified != null ">gmt_modified = #{gmtModified},</if>
+            <if test="description != null  and description != ''">description = #{description},</if>
+            <if test="creator != null  and creator != ''">creator = #{creator},</if>
+            <if test="issucess != null  and issucess != ''">isSucess = #{issucess},</if>
+        </trim>
+        where case_id = #{caseId}
+    </update>
+
+    <delete id="deleteOpenapiCasedetailById" parameterType="Long">
+        delete from openapi_casedetail where case_id = #{caseId}
+    </delete>
+
+    <delete id="deleteOpenapiCasedetailByIds" parameterType="String">
+        delete from openapi_casedetail where case_id in 
+        <foreach item="caseId" collection="array" open="(" separator="," close=")">
+            #{caseId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteOpenapiCasedetailByInterfaceIds" parameterType="String">
+        delete from openapi_casedetail where interfact_id in
+        <foreach item="interfactId" collection="array" open="(" separator="," close=")">
+            #{interfactId}
+        </foreach>
+    </delete>
+
+
+    
+</mapper>

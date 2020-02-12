@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.bestsign.openapi.mapper.OpenapiProjectMapper">
+    
+    <resultMap type="OpenapiProject" id="OpenapiProjectResult">
+        <result property="projectId"    column="project_id"    />
+        <result property="projectName"    column="project_name"    />
+        <result property="description"    column="description"    />
+        <result property="creator"    column="creator"    />
+    </resultMap>
+
+    <sql id="selectOpenapiProjectVo">
+        select project_id, project_name, description, creator from openapi_project
+    </sql>
+
+    <select id="selectOpenapiProjectList" parameterType="OpenapiProject" resultMap="OpenapiProjectResult">
+        <include refid="selectOpenapiProjectVo"/>
+        <where>  
+            <if test="projectName != null  and projectName != ''"> and project_name like concat('%', #{projectName}, '%')</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+            <if test="creator != null  and creator != ''"> and creator = #{creator}</if>
+        </where>
+    </select>
+    
+    <select id="selectOpenapiProjectById" parameterType="Long" resultMap="OpenapiProjectResult">
+        <include refid="selectOpenapiProjectVo"/>
+        where project_id = #{projectId}
+    </select>
+        
+    <insert id="insertOpenapiProject" parameterType="OpenapiProject" useGeneratedKeys="true" keyProperty="projectId">
+        insert into openapi_project
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="projectName != null  and projectName != ''">project_name,</if>
+            <if test="description != null  and description != ''">description,</if>
+            <if test="creator != null  and creator != ''">creator,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="projectName != null  and projectName != ''">#{projectName},</if>
+            <if test="description != null  and description != ''">#{description},</if>
+            <if test="creator != null  and creator != ''">#{creator},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOpenapiProject" parameterType="OpenapiProject">
+        update openapi_project
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="projectName != null  and projectName != ''">project_name = #{projectName},</if>
+            <if test="description != null  and description != ''">description = #{description},</if>
+            <if test="creator != null  and creator != ''">creator = #{creator},</if>
+        </trim>
+        where project_id = #{projectId}
+    </update>
+
+    <delete id="deleteOpenapiProjectById" parameterType="Long">
+        delete from openapi_project where project_id = #{projectId}
+    </delete>
+
+    <delete id="deleteOpenapiProjectByIds" parameterType="String">
+        delete from openapi_project where project_id in 
+        <foreach item="projectId" collection="array" open="(" separator="," close=")">
+            #{projectId}
+        </foreach>
+    </delete>
+    
+</mapper>
